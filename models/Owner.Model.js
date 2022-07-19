@@ -1,10 +1,7 @@
-const { Schema, model } = require("mongoose");
+import mongoose from "mongoose";
+const { Schema, model } = mongoose;
 
-// TODO: Please make sure you edit the user model to whatever makes sense in this case
-
-const User = model("User", userSchema);
-
-const userSchema = new Schema(
+const ownerSchema = new Schema(
   {
     name: {
       type: String,
@@ -16,6 +13,10 @@ const userSchema = new Schema(
       required: true,
       unique: true,
       trim: true,
+    },
+    // check regex phone number is valid
+    phoneNumber: {
+      type: Number,
     },
     password: {
       type: String,
@@ -37,24 +38,12 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    hasChildren: {
-      type: Boolean,
-      default: false,
-      required: true,
-    },
-    hasExperience: {
-      type: Boolean,
-      default: false,
-      required: true,
-    },
-    hasPets: {
-      type: Boolean,
-      default: false,
-      required: true,
-    },
-    matches: {
-      type: ObjectId,
-    },
+    dog: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Dog",
+      },
+    ],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
@@ -62,4 +51,6 @@ const userSchema = new Schema(
   }
 );
 
-module.exports = User;
+const Owner = model("Owner", ownerSchema);
+
+module.exports = Owner;
