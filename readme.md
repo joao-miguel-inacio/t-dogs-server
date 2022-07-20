@@ -1,36 +1,36 @@
 Routes Planning
 
-AUTH
+| Route          | HTTP Verb | Description                     | View                                                |
+| -------------- | --------- | ------------------------------- | --------------------------------------------------- |
+| /              | GET       | shows Homepage                  | HomePage                                            |
 
-| Route        | HTTP Verb | Description                     | View                                         |
-| ------------ | --------- | ------------------------------- | -------------------------------------------- |
-| auth/signup  | GET       | shows signin form               | auth>signup                                  |
-| auth/signup  | POST      | checks user input, creates user | redirect to signin                           |
-| auth/signin  | GET       | shows signin form               | auth>signin                                  |
-| auth/signin  | POST      | check user data                 | if signin is successful, redirect to profile |
-| auth/verify  | GET       | get currentUser Object          | auth>verify                                  |
-| auth/signout | GET       | signout user                    | redirect to auth>signin                      |
+| Route          | HTTP Verb | Description                     | View                                                |
+| -------------- | --------- | ----------- --------------------| --------------------------------------------------- |
+| auth/signup    | GET       | shows signing up form           | SignUp                                              |
+| auth/signup    | POST      | creates user                    | redirect to signin                                  |
+| auth/signin    | GET       | shows signing in form           | SignIn                                              |
+| auth/signin    | POST      | signs in                        | redirect to ownList if owner or to browse if buyer  |
 
-DOG OWNER
-| Route | HTTP Verb | Description | View |
-| ----- | --------- | --------------- | --------- |
-| /dogs | GET | show dogs list | dogs>list |
-| /dogs/offer | GET | show sell dog form | dogs>owner-form|
-| dogs/offer | POST | create dog offer| redirect to /dogs after successful creation|
-/dogs/:id/edit|GET| show edit | dogs>edit-dogs|
-/dogs/:id/edit|POST| edit dog info | rediredt to created dog|
-|
+OWNER
 
-USER ROUTES
-| Route | HTTP Verb | Description | View |
-| ----- | --------- | --------------- | --------- |
-| /dogs/browse | GET | show available dogs, swipe left and right buttons, check if there's a match, if yes, move Dog to savedList | dogs>browse |
-|dogs/matchList|GET|show matched dogs|dogs>matchList
-| dogs/:id | GET | get details | dogs>details|
+| Route          | HTTP Verb | Description                     | View                                                |
+| -------------- | --------- | --------------------------------| --------------------------------------------------- |
+| /dogs/ownList  | GET       | show dogs list                  | OwnDog List                                         |
+| /dogs/create   | GET       | show dog create form            | DogCreate                                           |
+| /dogs/create   | POST      | creates dog                     | redirect to OwnDogList                              |
+| /dogs/:id/edit | GET       | show edit dog form              | DogEdit                                             |
+| /dogs/:id/edit | POST      | edits dog                       | redirect to DogDetails                              |
 
-PROFILE
-| Route | HTTP Verb | Description | View |
-| ----- | --------- | --------------- | --------- |
-| /profile | GET | show user/owner profile | profile>profile |
-|profile/profile-edit|GET|show edit form|profile>profile-edit|
-|profile/profile-edit|POST|edit information, upload profileImage|redirect user/owner to profile|
+OWNER && BUYER
+| Route          | HTTP Verb | Description                     | View                                                |
+| -------------- | --------- | --------------------------------| --------------------------------------------------- |
+| /dogs/id       | GET       | show dog details                | DogDetails                                          |
+| /profile       | GET       | show user/owner profile         | OwnProfile                                          |
+| /profile/edit  | POST      | edits profile                   | redirect to OwnProfile                              |
+
+BUYER
+
+| Route          | HTTP Verb | Description                     | View                                                |
+| -------------- | --------- | --------------------------------| --------------------------------------------------- |
+| /dogs/browse   | GET       | show available dog              | BuyerDogView                                        |
+| /dogs/matchList| GET       | show matched dogs               | MatchedList                                         |
