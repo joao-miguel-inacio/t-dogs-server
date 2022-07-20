@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const ownerSchema = new Schema(
-  {
+const ownerSchema = new Schema({
     name: {
       type: String,
       required: true,
@@ -13,10 +12,6 @@ const ownerSchema = new Schema(
       required: true,
       unique: true,
       trim: true,
-    },
-    // check regex phone number is valid
-    phoneNumber: {
-      type: Number,
     },
     password: {
       type: String,
@@ -38,6 +33,9 @@ const ownerSchema = new Schema(
       type: String,
       required: true,
     },
+    phoneNumber: {
+      type: Number,
+    },
     dog: [
       {
         type: Schema.Types.ObjectId,
@@ -46,7 +44,6 @@ const ownerSchema = new Schema(
     ],
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
 );

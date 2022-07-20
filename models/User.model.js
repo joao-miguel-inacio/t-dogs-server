@@ -1,11 +1,7 @@
+import mongoose from "mongoose";
 const { Schema, model } = require("mongoose");
 
-// TODO: Please make sure you edit the user model to whatever makes sense in this case
-
-const User = model("User", userSchema);
-
-const userSchema = new Schema(
-  {
+const userSchema = new Schema(  {
     name: {
       type: String,
       required: true,
@@ -57,9 +53,10 @@ const userSchema = new Schema(
     },
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
 );
+
+const User = model("User", userSchema);
 
 module.exports = User;

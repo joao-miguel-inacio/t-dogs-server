@@ -48,6 +48,7 @@ router.post("/signup", async (req, res, next) => {
 			name,
 			email,
 			password: hashedPass,
+			hasChildren
 		})
 
 		const user = createdUser.toObject()
