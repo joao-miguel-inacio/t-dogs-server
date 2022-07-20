@@ -1,6 +1,6 @@
 const { Schema, model, mongoose } = require("mongoose");
 
-const MegaUserSchema = new Schema(
+const megaUserSchema = new Schema(
   {
     name: {
       type: String,
@@ -39,7 +39,7 @@ const MegaUserSchema = new Schema(
   }
 );
 
-const MegaUser = model("User", userSchema);
+const MegaUser = model("MegaUser", megaUserSchema);
 
 const buyerSchema = new Schema({
   hasChildren: {
