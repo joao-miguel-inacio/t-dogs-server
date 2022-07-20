@@ -4,21 +4,24 @@ const { Schema, model } = mongoose;
 const dogSchema = new Schema({
   image: {
     type: String,
+    required: true,
   },
   name: {
     type: String,
     required: true,
     trim: true,
   },
-  breedGroup: {
+  breed: {
     type: String,
-    enum: [],
     required: true,
   },
-  // check if approximate
   age: {
     type: Number,
     required: true,
+    approximate: {
+      type: Boolean,
+      default: false
+    }
   },
   gender: {
     type: String,
@@ -28,24 +31,11 @@ const dogSchema = new Schema({
   size: {
     type: String,
     required: true,
-    enum: ["S", "M", "L"],
+    enum: ["small", "medium", "large"],
   },
-  /*  // weight information table
-  weight: {
-    type: Number,
-    enum: ["S", "M", "L"],
-    required: true
-  },
-  expectedWeight: {
-    type: Number,
-    enum: ["S", "M", "L"],
-    required: true
-  },
-  height: {
-    type: String,
-  }, */
   shortDescription: {
     type: String,
+    required: true,
     maxLength: 25,
   },
   description: {
@@ -79,6 +69,7 @@ const dogSchema = new Schema({
   },
   alreadyAdopted: {
     type: Boolean,
+    default: false,
   },
 });
 
