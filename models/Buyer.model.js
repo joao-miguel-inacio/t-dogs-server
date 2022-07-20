@@ -1,7 +1,6 @@
-import mongoose from "mongoose";
 const { Schema, model } = require("mongoose");
 
-const buyerSchema = new Schema(  {
+const buyerSchema = new Schema({
     name: {
       type: String,
       required: true,

@@ -3,7 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const isAuthenticated = require("../middleware/isAuthenticated");
-const Buyer = require("../models/Buyer.model");
+const Buyer = require("..//models/Buyer.model");
+const Owner = require("../models/Owner.model");
 const saltRounds = 10;
 
 /**
@@ -47,7 +48,7 @@ router.post("/signup", async (req, res, next) => {
     // }
 
     try {
-      const foundBuyer = await User.findOne({ email });
+      const foundBuyer = await Buyer.findOne({ email });
       console.log("foundBuyer", foundBuyer);
       if (foundBuyer) {
         res
@@ -115,9 +116,9 @@ router.post("/signup", async (req, res, next) => {
 		// }
 	
 		try {
-		  const foundSeller = await User.findOne({ email });
-		  console.log("foundSeller", foundSeller);
-		  if (foundSeller) {
+		  const foundOwner = await Owner.findOne({ email });
+		  console.log("foundOwner", foundOwner);
+		  if (foundOwner) {
 			res
 			  .status(400)
 			  .json({ message: "Email already registered, please login." });
@@ -126,14 +127,14 @@ router.post("/signup", async (req, res, next) => {
 		  const salt = bcrypt.genSaltSync(saltRounds);
 		  const hashedPass = bcrypt.hashSync(password, salt);
 	
-		  const createdSeller = await Seller.create({
+		  const createdOwner = await Owner.create({
 			name,
 			email,
 			password: hashedPass,
 			address,
 		  });
 	
-		  const user = createdSeller.toObject();
+		  const user = createdOwner.toObject();
 		  delete user.password;
 		  // ! Sending the user as json to the client
 		  res.status(201).json({ user });
