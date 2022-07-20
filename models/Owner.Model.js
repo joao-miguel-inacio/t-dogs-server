@@ -22,7 +22,6 @@ const ownerSchema = new Schema({
     },
     profilePicture: {
       type: String,
-      required: true,
     },
     description: {
       type: String,

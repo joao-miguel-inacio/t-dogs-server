@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema, model } = require("mongoose");
 
-const userSchema = new Schema(  {
+const buyerSchema = new Schema(  {
     name: {
       type: String,
       required: true,
@@ -22,7 +22,6 @@ const userSchema = new Schema(  {
     },
     profilePicture: {
       type: String,
-      required: true,
     },
     description: {
       type: String,
@@ -59,6 +58,6 @@ const userSchema = new Schema(  {
   }
 );
 
-const User = model("User", userSchema);
+const Buyer = model("Buyer", buyerSchema);
 
-module.exports = User;
+module.exports = Buyer;

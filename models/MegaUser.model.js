@@ -22,7 +22,6 @@ const megaUserSchema = new Schema(
     },
     profilePicture: {
       type: String,
-      required: true,
     },
     description: {
       type: String,
@@ -32,7 +31,6 @@ const megaUserSchema = new Schema(
       type: String,
       required: true,
     },
-    slug: { type: String, slug: "userType" },
   },
   {
     timestamps: true,
