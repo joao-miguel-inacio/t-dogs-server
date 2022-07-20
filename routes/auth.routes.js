@@ -145,49 +145,10 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
-router.post("/signin", async (req, res, next) => {
-  const { email, password } = req.body;
-  if (email === "" || password === "") {
-    res.status(400).json({ message: "Please provide your email and password" });
-  }
-  try {
-    const foundBuyer = await Buyer.findOne({ email });
-    if (!foundBuyer) {
-      const foundOwner = await Owner.findOne({ email });
-      if (!foundOwner) {
-        res.status(500).json({ message: "Wrong credentials." });
-        return;
-      }
-      const goodPass = bcrypt.compareSync(password, foundOwner.password);
-      if (goodPass) {
-        const user = foundOwner.toObject();
-        delete user.password;
-
-        /**
-         * Sign method allow you to create the token.
-         *
-         * ---
-         *
-         * - First argument: user, should be an object. It is our payload !
-         * - Second argument: A-really-long-random-string...
-         * - Third argument: Options...
-         */
-
-        const authToken = jwt.sign(user, process.env.TOKEN_SECRET, {
-          algorithm: "HS256",
-          expiresIn: "2d",
-        });
-
-        //! Sending the authToken to the client !
-
-        res.status(200).json({ authToken });
-      } else {
-        res.status(500).json({ message: "Wrong credentials." });
-      }
-    }
-    const goodPass = bcrypt.compareSync(password, foundBuyer.password);
+const comparePasswordAndCreateToken = (password, foundUser) => {
+  const goodPass = bcrypt.compareSync(password, foundUser.password);
     if (goodPass) {
-      const user = foundBuyer.toObject();
+      const user = foundUser.toObject();
       delete user.password;
 
       /**
@@ -204,12 +165,39 @@ router.post("/signin", async (req, res, next) => {
         algorithm: "HS256",
         expiresIn: "2d",
       });
+      return authToken;
+    }
+    return null;
+};
 
-      //! Sending the authToken to the client !
-
-      res.status(200).json({ authToken });
+router.post("/signin", async (req, res, next) => {
+  const { email, password } = req.body;
+  if (email === "" || password === "") {
+    res.status(400).json({ message: "Please provide your email and password" });
+  }
+  try {
+    const foundBuyer = await Buyer.findOne({ email });
+    if (foundBuyer) {
+      const foundUser = foundBuyer;
+      const authToken = comparePasswordAndCreateToken (password, foundUser);
+      if (authToken) {
+        res.status(200).json({ authToken });
+      } else {
+        res.status(500).json({ message: "Wrong password." });
+      }
     } else {
-      res.status(500).json({ message: "Wrong credentials." });
+      const foundOwner = await Owner.findOne({ email });
+      if (!foundOwner) {
+        res.status(500).json({ message: "Wrong credentials." });
+        return;
+      }
+      const foundUser = foundOwner;
+      const authToken = comparePasswordAndCreateToken (password, foundUser);
+      if (authToken) {
+        res.status(200).json({ authToken });
+      } else {
+        res.status(500).json({ message: "Wrong password." });
+      }
     }
   } catch (error) {
     next(error);
