@@ -27,7 +27,6 @@ const userSchema = new Schema(  {
     description: {
       type: String,
       maxLength: 450,
-      required: true,
     },
     address: {
       type: String,
@@ -48,9 +47,12 @@ const userSchema = new Schema(  {
       default: false,
       required: true,
     },
-    matches: {
-      type: ObjectId,
-    },
+    matches: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Dog",
+      },
+    ],
   },
   {
     timestamps: true,

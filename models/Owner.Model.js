@@ -27,7 +27,6 @@ const ownerSchema = new Schema({
     description: {
       type: String,
       maxLength: 450,
-      required: true,
     },
     address: {
       type: String,
