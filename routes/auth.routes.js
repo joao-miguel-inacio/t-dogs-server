@@ -209,8 +209,8 @@ router.get("/me", isAuthenticated, (req, res, next) => {
   res.status(200).json(req.payload);
 });
 
-router.get("/testIsBuyer", isAuthenticated, (req, res, next) => {
-  const foundBuyer = Buyer.findbyId(req.payload._id);
+router.get("/testIsBuyer", isAuthenticated, async (req, res, next) => {
+  const foundBuyer = await Buyer.findById(req.payload._id);
   if (!foundBuyer) {
     res.status(500).json({ message: "Unauthorized access." });
     return;
@@ -218,8 +218,8 @@ router.get("/testIsBuyer", isAuthenticated, (req, res, next) => {
   console.log("Buyer is logged on, proceed to rest of the route");
 });
 
-router.get("/testIsOwner", isAuthenticated, (req, res, next) => {
-  const foundOwner = Owner.findById(req.payload._id);
+router.get("/testIsOwner", isAuthenticated, async (req, res, next) => {
+  const foundOwner = await Owner.findById(req.payload._id);
   if (!foundOwner) {
     res.status(500).json({ message: "Unauthorized access." });
     return;
