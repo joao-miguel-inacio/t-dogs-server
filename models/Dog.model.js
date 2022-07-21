@@ -19,8 +19,8 @@ const dogSchema = new Schema({
     required: true,
     approximate: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   gender: {
     type: String,
@@ -35,7 +35,7 @@ const dogSchema = new Schema({
   shortDescription: {
     type: String,
     required: true,
-    maxLength: 25,
+    maxLength: 45,
   },
   description: {
     type: String,
@@ -49,7 +49,7 @@ const dogSchema = new Schema({
   playful: {
     type: Boolean,
     default: false,
-  },  
+  },
   alreadyAdopted: {
     type: Boolean,
     default: false,

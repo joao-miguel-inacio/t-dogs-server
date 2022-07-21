@@ -13,7 +13,7 @@ const Dog = require("../models/Dog.model");
  */
 
 // BUYER
-
+// show available dogs
 router.get("/browse", isAuthenticated, async (req, res, next) => {
   const foundBuyer = await Buyer.findById(req.payload._id);
   if (!foundBuyer) {
@@ -32,7 +32,8 @@ router.get("/browse", isAuthenticated, async (req, res, next) => {
   }
 });
 
-router.put("/match", isAuthenticated, async (req, res, next) => {
+// adds dog(s) to buyers matches list
+router.put("/:id/match", isAuthenticated, async (req, res, next) => {
   const foundBuyer = await Buyer.findById(req.payload._id);
   if (!foundBuyer) {
     res.status(500).json({ message: "Unauthorized access." });
@@ -53,19 +54,94 @@ router.put("/match", isAuthenticated, async (req, res, next) => {
   }
 });
 
+// show buyers matches list
 router.get("/matchlist", isAuthenticated, async (req, res, next) => {
-    const foundBuyer = await Buyer.findById(req.payload._id).populate(matches);
-    if (!foundBuyer) {
-      res.status(500).json({ message: "Unauthorized access." });
-      return;
-    }
-    try {
-      //console.log(foundBuyer.matches)
-      //pass buyer's matches to client side
-      res.status(201).json({ foundBuyer });
-    } catch (error) {
-      return res.status(500).json({ errorMessage: error.message });
-    }
-  });
+  const foundBuyer = await Buyer.findById(req.payload._id).populate(matches);
+  if (!foundBuyer) {
+    res.status(500).json({ message: "Unauthorized access." });
+    return;
+  }
+  try {
+    //console.log(foundBuyer.matches)
+    //pass buyer's matches to client side
+    res.status(201).json({ foundBuyer });
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
+});
+
+// OWNER
+
+// OwnList
+router.post("/:id/ownList", isAuthenticated, async (req, res, next) => {
+  const { id } = req.params;
+  const saveDog = await Dog.findById(id);
+  // get current user and get user id
+  const dogId = req.payload._id;
+  try {
+    await Dog.findByIdAndUpdate(
+      dogId,
+      { $addToSet: { ownList: saveDog.id } },
+      { new: true }
+    );
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
+});
+
+//CREATE
+// create new dog
+router.post("/create", isAuthenticated, async (req, res, next) => {
+  try {
+    const {
+      image,
+      name,
+      breed,
+      age,
+      gender,
+      size,
+      shortDescription,
+      description,
+      openToStrangers,
+      playful,
+      alreadyAdopted,
+      chippedAndVaccinated,
+      childFriendly,
+      requiresExperience,
+      goodWithOtherDogs,
+      price,
+    } = req.body;
+    /* if (!name) {
+      return res.status(500).json({ errorMessage: "Name is required" });
+    } */
+    const sellDog = await Dog.create(req.body);
+    return res.status(201).json({ sellDog });
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
+});
+
+// EDIT
+// get single dog
+router.get("/:id/edit", isAuthenticated, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const dog = await Dog.findById(id);
+    return res.status(201).json({ dog });
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
+});
+
+// update dog
+router.put("/:id/edit", isAuthenticated, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const editDog = await Dog.findByIdAndUpdate(id, req.body, { new: true });
+    return res.status(201).json({ editDog });
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
+});
 
 module.exports = router;
