@@ -53,4 +53,19 @@ router.put("/match", isAuthenticated, async (req, res, next) => {
   }
 });
 
+router.get("/matchlist", isAuthenticated, async (req, res, next) => {
+    const foundBuyer = await Buyer.findById(req.payload._id).populate(matches);
+    if (!foundBuyer) {
+      res.status(500).json({ message: "Unauthorized access." });
+      return;
+    }
+    try {
+      //console.log(foundBuyer.matches)
+      //pass buyer's matches to client side
+      res.status(201).json({ foundBuyer });
+    } catch (error) {
+      return res.status(500).json({ errorMessage: error.message });
+    }
+  });
+
 module.exports = router;
