@@ -93,6 +93,11 @@ router.post("/:id/ownList", isAuthenticated, async (req, res, next) => {
 // create new dog
 router.post("/create", isAuthenticated, async (req, res, next) => {
   try {
+    const foundOwner = await Owner.findById(req.payload._id);
+    if (!foundOwner) {
+      res.status(500).json({ message: "Unauthorized access." });
+      return;
+    }
     const {
       image,
       name,
@@ -111,11 +116,17 @@ router.post("/create", isAuthenticated, async (req, res, next) => {
       goodWithOtherDogs,
       price,
     } = req.body;
-    /* if (!name) {
+    /* if (!name AND EVERYTHING ELSE THAT IS MANDATORY) {
       return res.status(500).json({ errorMessage: "Name is required" });
-    } */
-    const sellDog = await Dog.create(req.body);
-    return res.status(201).json({ sellDog });
+    } 
+    ALSO NEED TO PASS ALL INFO TO THE CLIENT SIDE TO POPULATE THE FORM WITH CURRENT VALUE*/
+    const newDog = await Dog.create(req.body);
+    const updatedUser = await Owner.findOneAndUpdate(
+      { _id: req.payload._id },
+      { $addToSet: { dog: newDog._id } }
+    )
+    console.log(updatedUser)
+    return res.status(201).json({ newDog });
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }
@@ -135,8 +146,19 @@ router.get("/:id/edit", isAuthenticated, async (req, res, next) => {
 
 // update dog
 router.put("/:id/edit", isAuthenticated, async (req, res, next) => {
+  
+  //check that the dog belongs to the owner
+  //check that id is in foundOwner.dog - this will prove that foundOwner is dog's owner
   try {
+    const foundOwner = await Owner.findById(req.payload._id);
+  if (!foundOwner) {
+    res.status(500).json({ message: "Unauthorized access." });
+    return;
+  }
+  console.log(foundOwner.dog)
     const { id } = req.params;
+    console.log(id)
+    console.log(req.body)
     const editDog = await Dog.findByIdAndUpdate(id, req.body, { new: true });
     return res.status(201).json({ editDog });
   } catch (error) {

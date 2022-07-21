@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const isAuthenticated = require("../middleware/isAuthenticated");
 const Buyer = require("..//models/Buyer.model");
-const Owner = require("../models/Owner.model");
+//const {MegaUser, Buyer, Seller} = require("../models/MegaUser.model");
 const saltRounds = 10;
 
 /**
