@@ -19,4 +19,5 @@ Routes Planning
 | /profile/edit  | POST      | edits profile                   | redirect to OwnProfile                              |
 | BUYER          |           |                                 |                                                     |
 | /dogs/browse   | GET       | show available dog              | BuyerDogView                                        |
+| /dogs/:id/match| PUT       | adds dogs to buyers matches list| BuyerDogView + notification                                       |
 | /dogs/matchList| GET       | show matched dogs               | MatchedList                                         |
