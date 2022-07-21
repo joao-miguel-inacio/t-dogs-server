@@ -49,6 +49,10 @@ const dogSchema = new Schema({
   playful: {
     type: Boolean,
     default: false,
+  },  
+  alreadyAdopted: {
+    type: Boolean,
+    default: false,
   },
   chippedAndVaccinated: {
     type: Boolean,
@@ -66,9 +70,9 @@ const dogSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  alreadyAdopted: {
-    type: Boolean,
-    default: false,
+  price: {
+    type: Number,
+    required: true,
   },
 });
 

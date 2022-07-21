@@ -33,17 +33,18 @@ const buyerSchema = new Schema({
     hasChildren: {
       type: Boolean,
       default: false,
-      required: true,
     },
     hasExperience: {
       type: Boolean,
       default: false,
-      required: true,
     },
     hasPets: {
       type: Boolean,
       default: false,
-      required: true,
+    },
+    willingToPay: {
+      type: Boolean,
+      default: false,
     },
     matches: [
       {
