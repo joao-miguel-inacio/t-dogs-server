@@ -3,9 +3,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const isAuthenticated = require("../middleware/isAuthenticated");
-const Buyer = require("..//models/Buyer.model");
-//const {MegaUser, Buyer, Seller} = require("../models/MegaUser.model");
+const Buyer = require("../models/Buyer.model");
+const Owner = require("../models/Owner.model");
 const saltRounds = 10;
+const isBuyer = require ("../middleware/isBuyer")
+const isOwner = require ("../middleware/isOwner")
 
 /**
  *
@@ -209,21 +211,15 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
   res.status(200).json(req.payload);
 });
 
-router.get("/testIsBuyer", isAuthenticated, async (req, res, next) => {
-  const foundBuyer = await Buyer.findById(req.payload._id);
-  if (!foundBuyer) {
-    res.status(500).json({ message: "Unauthorized access." });
-    return;
-  }
+router.get("/testIsBuyer", isAuthenticated, isBuyer, (req, res, next) => {
+  console.log("payload", req.payload)
+  console.log("foundBuyer", req.foundBuyer)
   console.log("Buyer is logged on, proceed to rest of the route");
 });
 
-router.get("/testIsOwner", isAuthenticated, async (req, res, next) => {
-  const foundOwner = await Owner.findById(req.payload._id);
-  if (!foundOwner) {
-    res.status(500).json({ message: "Unauthorized access." });
-    return;
-  }
+router.get("/testIsOwner", isAuthenticated, isOwner, (req, res, next) => {
+  console.log("payload", req.payload)
+  console.log("foundOwner", req.foundOwner)
   console.log("Owner is logged on, proceed to rest of the route");
 });
 

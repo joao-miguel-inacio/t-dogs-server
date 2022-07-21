@@ -65,7 +65,7 @@ const buyerSchema = new Schema({
 
 const Buyer = MegaUser.discriminator("Buyer", buyerSchema);
 
-const sellerSchema = new Schema({
+const ownerSchema = new Schema({
     phoneNumber: {
         type: Number,
       },
@@ -77,6 +77,6 @@ const sellerSchema = new Schema({
       ],
   });
   
-  const Seller = MegaUser.discriminator("Seller", sellerSchema);
+  const Owner = MegaUser.discriminator("Owner", ownerSchema);
 
-module.exports = {MegaUser, Buyer, Seller};
+module.exports = {MegaUser, Buyer, Owner};

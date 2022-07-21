@@ -34,12 +34,10 @@ const dogSchema = new Schema({
   },
   shortDescription: {
     type: String,
-    required: true,
     maxLength: 45,
   },
   description: {
     type: String,
-    required: true,
     maxLength: 450,
   },
   openToStrangers: {
