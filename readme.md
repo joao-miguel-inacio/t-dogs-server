@@ -1,7 +1,7 @@
 Routes Planning
 
 | Route           | HTTP Verb | Description                          | View                                               |
-| --------------- | :-------: | -------------------------------    - | -------------------------------------------------- |
+| --------------- | :-------: | ------------------------------------ | -------------------------------------------------- |
 | /               |    GET    | shows Homepage                       | HomePage                                           |
 | auth/signup     |   POST    | creates user                         | redirect to signin                                 |
 | auth/signin     |   POST    | signs in                             | redirect to ownList if owner or to browse if buyer |
