@@ -5,17 +5,19 @@ const mongoose = require("mongoose");
 const isAuthenticated = require("../middleware/isAuthenticated");
 const Buyer = require("../models/Buyer.model");
 const Owner = require("../models/Owner.model");
+// using descriptors: if uncommenting the next line, please comment the 2 lines above
+// const {MegaUser, Owner, Buyer} = require ("../models/MegaUser.model")
 const saltRounds = 10;
-const isBuyer = require ("../middleware/isBuyer")
-const isOwner = require ("../middleware/isOwner")
+const isBuyer = require ("../middleware/isBuyer");
+const isOwner = require ("../middleware/isOwner");
 
-/**
- *
+/*
  * * All the routes are prefixed with `/api/auth`
- *
  */
 
+//the following route is tested
 router.post("/signup", async (req, res, next) => {
+  //allows user to sign up
   const { userType } = req.body;
   if (userType === "buyer") {
     const {
@@ -172,7 +174,9 @@ const comparePasswordAndCreateToken = (password, foundUser) => {
     return null;
 };
 
+//the following route is tested
 router.post("/signin", async (req, res, next) => {
+  //allows user to sign in
   const { email, password } = req.body;
   if (email === "" || password === "") {
     res.status(400).json({ message: "Please provide your email and password" });
@@ -206,18 +210,24 @@ router.post("/signin", async (req, res, next) => {
   }
 });
 
+//the following route is tested
 router.get("/verify", isAuthenticated, (req, res, next) => {
+  //this route was created to test the middleware
   console.log("req payload", req.payload);
   res.status(200).json(req.payload);
 });
 
+//the following route is tested
 router.get("/testIsBuyer", isAuthenticated, isBuyer, (req, res, next) => {
+  //this route was created to test the middleware
   console.log("payload", req.payload)
   console.log("foundBuyer", req.foundBuyer)
   console.log("Buyer is logged on, proceed to rest of the route");
 });
 
+//the following route is tested
 router.get("/testIsOwner", isAuthenticated, isOwner, (req, res, next) => {
+  //this route was created to test the middleware
   console.log("payload", req.payload)
   console.log("foundOwner", req.foundOwner)
   console.log("Owner is logged on, proceed to rest of the route");
