@@ -78,37 +78,7 @@ router.post("/create", isAuthenticated, isOwner, async (req, res, next) => {
   }
 });
 
-//the following route is tested
-router.get("/:id", isAuthenticated, isOwner, async (req, res, next) => {
-  //shows single dog details
-  try {
-    const { id } = req.params;
-    const dog = await Dog.findById(id);
-    return res.status(201).json({ dog });
-  } catch (error) {
-    return res.status(500).json({ errorMessage: error.message });
-  }
-});
-
-//the following route is NOT WORKING. req.body is returning {}
-router.put("/:id", isAuthenticated, isOwner, async (req, res, next) => {
-  //allows owner to edit own dog
-  //check that the dog belongs to the owner
-  //check that id is in foundOwner.dog - this will prove that foundOwner is dog's owner
-  try {
-    const { id } = req.params;
-    console.log(id)
-    console.log(req.body)
-    const editDog = await Dog.findByIdAndUpdate(id, req.body, { new: true });
-    console.log(editDog)
-    return res.status(200).json({ editDog });
-  } catch (error) {
-    return res.status(500).json({ errorMessage: error.message });
-  }
-});
-
-// BUYER
-// show available dogs
+// show available dogs to buyer
 router.get("/browse", isAuthenticated, isBuyer, async (req, res, next) => {
   const foundBuyer = await Buyer.findById(req.payload._id);
   if (!foundBuyer) {
@@ -122,10 +92,38 @@ router.get("/browse", isAuthenticated, isBuyer, async (req, res, next) => {
     //filter array and remove dogs marked as adopted
     //pass dog's names, prices, images, ids, criteria to match to client side
     //pass buyer's matching criteria to client side
+    return res.status(201).json({ dogs });
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }
 });
+//the following route is tested
+router.get("/:id", isAuthenticated, isOwner, async (req, res, next) => {
+  //shows single dog details
+  try {
+    const { id } = req.params;
+    const dog = await Dog.findById(id);
+    return res.status(201).json({ dog });
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
+});
+
+router.put("/:id", isAuthenticated, isOwner, async (req, res, next) => {
+  //allows owner to edit own dog
+  //check that the dog belongs to the owner
+  //check that id is in foundOwner.dog - this will prove that foundOwner is dog's owner
+  try {
+    const { id } = req.params;
+    const editDog = await Dog.findByIdAndUpdate(id, req.body, { new: true });
+    console.log(req.body);
+    return res.status(201).json({ editDog });
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
+});
+
+// BUYER
 
 // adds dog(s) to buyers matches list
 router.put("/:id/match", isAuthenticated, isBuyer, async (req, res, next) => {
@@ -137,11 +135,11 @@ router.put("/:id/match", isAuthenticated, isBuyer, async (req, res, next) => {
   try {
     const { id } = req.params;
     const currentDog = await Dog.findById(id);
-    //console.log(currentDog)
+    console.log(currentDog);
     const currentBuyer = await Buyer.findOneAndUpdate(
       { _id: req.payload._id },
-      { $addToSet: { matches: dog._id } }
-    ).populate(matches);
+      { $addToSet: { matches: currentDog._id } }
+    ).populate("matches");
     //console.log(currentBuyer)
     res.status(201).json({ currentBuyer });
   } catch (error) {
