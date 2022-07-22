@@ -13,12 +13,11 @@ const Owner = require("../models/Owner.model");
 router.get("/", isAuthenticated, async (req, res, next) => {
   //returns user data
   try {
-    const foundUserId = req.payload._id;
     const foundUser =
-      (await Buyer.findById(foundUserId)) ||
-      (await Owner.findById(foundUserId));
+      await Buyer.findById({ _id: req.payload._id }) ||
+      await Owner.findById({ _id: req.payload._id });
     // using descriptors: if uncommenting the next line, please comment the line above
-    //const foundUser = await MegaUser.findById(foundUserId);
+    //const foundUser = await MegaUser.findById(userId);
     return res.status(201).json({ foundUser });
   } catch (error) {
     res.status(500).json({ errorMessage: error.message });
@@ -29,20 +28,17 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 router.put("/", isAuthenticated, async (req, res, next) => {
   //allows user to edit own profile
   try {
-    const id = req.payload._id;
     const { name, email, address } = req.body;
     if (name === "" || email === "" || address === "") {
       res.status(400).json({
         message: "Please make sure you fill all mandatory fields",
       });
     }
-    console.log("req.body editing profile", req.body);
     const updatedUser =
-      (await Buyer.findByIdAndUpdate(id, req.body, { new: true })) ||
-      (await Owner.findByIdAndUpdate(id, req.body, { new: true }));
+      await Buyer.findByIdAndUpdate({ _id: req.payload._id }, req.body, { new: true }) ||
+      await Owner.findByIdAndUpdate({ _id: req.payload._id }, req.body, { new: true });
     // using descriptors: if uncommenting the next line, please comment the line above
-    // const updatedUser = await MegaUser.findByIdAndUpdate(req.body, { new: true });
-    console.log(updatedUser);
+    // const updatedUser = await MegaUser.findByIdAndUpdate({ _id: req.payload._id }, req.body, { new: true });
     return res.status(201).json({ updatedUser });
   } catch (error) {
     res.status(500).json({ errorMessage: error.message });
