@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const authRoutes = require("./auth.routes");
-const dogRoutes = require("./dogs.routes");
-const profileRoutes = require("./profile.routes");
+const commonRoutes = require("./common.routes");
+const buyerRoutes = require("./buyer.routes");
+const ownerRoutes = require("./owner.routes");
 
 /* GET home page */
 router.get("/", (req, res, next) => {
@@ -9,7 +10,8 @@ router.get("/", (req, res, next) => {
 });
 
 router.use("/auth", authRoutes);
-router.use("/dogs", dogRoutes);
-router.use("/profile", profileRoutes);
+router.use("/common", commonRoutes);
+router.use("/user", buyerRoutes);
+router.use("/owner", ownerRoutes);
 
 module.exports = router;

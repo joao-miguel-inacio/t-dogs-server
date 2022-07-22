@@ -29,7 +29,6 @@ router.post("/signup", async (req, res, next) => {
       hasExperience,
       hasPets,
     } = req.body;
-    console.log("req.body", req.body);
     if (email === "" || name === "" || password === "" || address === "") {
       res.status(400).json({
         message: "Please provide your email, name, password and address",
@@ -51,7 +50,6 @@ router.post("/signup", async (req, res, next) => {
 
     try {
       const foundBuyer = await Buyer.findOne({ email });
-      console.log("foundBuyer", foundBuyer);
       if (foundBuyer) {
         res
           .status(400)
@@ -76,7 +74,6 @@ router.post("/signup", async (req, res, next) => {
       // ! Sending the user as json to the client
       res.status(201).json({ user });
     } catch (error) {
-      console.log(error);
       if (error instanceof mongoose.Error.ValidationError) {
         return res.status(400).json({ message: error.message });
       }
@@ -90,7 +87,6 @@ router.post("/signup", async (req, res, next) => {
     }
   } else {
     const { name, email, password, address } = req.body;
-    console.log("req.body", req.body);
     if (email === "" || name === "" || password === "" || address === "") {
       res.status(400).json({
         message: "Please provide your email, name, password and address",
@@ -112,7 +108,6 @@ router.post("/signup", async (req, res, next) => {
 
     try {
       const foundOwner = await Owner.findOne({ email });
-      console.log("foundOwner", foundOwner);
       if (foundOwner) {
         res
           .status(400)
@@ -167,7 +162,7 @@ const comparePasswordAndCreateToken = (password, foundUser) => {
 
       const authToken = jwt.sign(user, process.env.TOKEN_SECRET, {
         algorithm: "HS256",
-        expiresIn: "2d",
+        expiresIn: "90d",
       });
       return authToken;
     }
@@ -215,22 +210,6 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
   //this route was created to test the middleware
   console.log("req payload", req.payload);
   res.status(200).json(req.payload);
-});
-
-//the following route is tested
-router.get("/testIsBuyer", isAuthenticated, isBuyer, (req, res, next) => {
-  //this route was created to test the middleware
-  console.log("payload", req.payload)
-  console.log("foundBuyer", req.foundBuyer)
-  console.log("Buyer is logged on, proceed to rest of the route");
-});
-
-//the following route is tested
-router.get("/testIsOwner", isAuthenticated, isOwner, (req, res, next) => {
-  //this route was created to test the middleware
-  console.log("payload", req.payload)
-  console.log("foundOwner", req.foundOwner)
-  console.log("Owner is logged on, proceed to rest of the route");
 });
 
 module.exports = router;
