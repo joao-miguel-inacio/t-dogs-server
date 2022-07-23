@@ -48,15 +48,17 @@ router.put(
     //allows user to edit own profile
     try {
       const { name, email, address } = req.body;
+      let { profilePicture } = req.body;
       if (name === "" || email === "" || address === "") {
         res.status(400).json({
           message: "Please make sure you fill all mandatory fields",
         });
       }
-      if (req.file) {
-        return res.status(201).json({ fileUrl: req.file.path });
+      if (!req.file) {
+        return res.status(501).json({ errorMessage: "File didn't upload" });
+      } else {
+        profilePicture = req.file.path;
       }
-      res.status(501).json({ errorMessage: "File didn't upload" });
 
       const updatedUser =
         (await Buyer.findByIdAndUpdate(req.payload._id, req.body, {
@@ -69,7 +71,7 @@ router.put(
       // const updatedUser = await MegaUser.findByIdAndUpdate({ _id: req.payload._id }, req.body, { new: true });
       const user = updatedUser.toObject();
       delete user.password;
-      return res.status(201).json({ updatedUser });
+      return res.status(200).json({ updatedUser });
     } catch (error) {
       res.status(500).json({ errorMessage: error.message });
     }
