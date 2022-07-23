@@ -48,30 +48,27 @@ router.put(
     //allows user to edit own profile
     try {
       const { name, email, address } = req.body;
-      let { profilePicture } = req.body;
+      let {profilePicture} = req.body;
       if (name === "" || email === "" || address === "") {
         res.status(400).json({
           message: "Please make sure you fill all mandatory fields",
         });
       }
-      if (!req.file) {
-        return res.status(501).json({ errorMessage: "File didn't upload" });
-      } else {
+      if (req.file) {
         profilePicture = req.file.path;
       }
-
       const updatedUser =
-        (await Buyer.findByIdAndUpdate(req.payload._id, req.body, {
+        await Buyer.findByIdAndUpdate(req.payload._id, {...req.body, profilePicture}, {
           new: true,
-        })) ||
-        (await Owner.findByIdAndUpdate(req.payload._id, req.body, {
+        }) ||
+        await Owner.findByIdAndUpdate(req.payload._id, {...req.body, profilePicture}, {
           new: true,
-        }));
+        });
       // using descriptors: if uncommenting the next line, please comment the line above
-      // const updatedUser = await MegaUser.findByIdAndUpdate({ _id: req.payload._id }, req.body, { new: true });
+      // const updatedUser = await MegaUser.findByIdAndUpdate(req.payload._id, req.body, { new: true });
       const user = updatedUser.toObject();
       delete user.password;
-      return res.status(200).json({ updatedUser });
+      return res.status(200).json({ user });
     } catch (error) {
       res.status(500).json({ errorMessage: error.message });
     }
