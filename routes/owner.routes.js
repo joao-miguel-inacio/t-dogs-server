@@ -12,38 +12,45 @@ const fileUploader = require("../config/cloudinary.config");
  */
 
 //the following route is tested
-router.put("/:id", isAuthenticated, isOwner, async (req, res, next) => {
-  //allows owner to edit OWN dog details
-  if (
-    !req.foundOwner.dog.some(
-      (element) => element._id.toString() === req.params.id
-    )
-  ) {
-    return res.status(500).json({ message: "Unauthorized access" });
+router.put(
+  "/:id",
+  fileUploader.single("image"),
+  isAuthenticated,
+  isOwner,
+  async (req, res, next) => {
+    //allows owner to edit OWN dog details
+    if (
+      !req.foundOwner.dog.some(
+        (element) => element._id.toString() === req.params.id
+      )
+    ) {
+      return res.status(500).json({ message: "Unauthorized access" });
+    }
+    const { image, name, breed, age, gender, size, price } = req.body;
+    if (
+      image === "" ||
+      name === "" ||
+      breed === "" ||
+      age === "" ||
+      gender === "" ||
+      size === "" ||
+      price === ""
+    ) {
+      res.status(400).json({
+        message: "Please make sure you fill all mandatory fields",
+      });
+    }
+    try {
+      const editDog = await Dog.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+      });
+
+      return res.status(201).json({ editDog });
+    } catch (error) {
+      return res.status(500).json({ errorMessage: error.message });
+    }
   }
-  const { image, name, breed, age, gender, size, price } = req.body;
-  if (
-    image === "" ||
-    name === "" ||
-    breed === "" ||
-    age === "" ||
-    gender === "" ||
-    size === "" ||
-    price === ""
-  ) {
-    res.status(400).json({
-      message: "Please make sure you fill all mandatory fields",
-    });
-  }
-  try {
-    const editDog = await Dog.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-    return res.status(201).json({ editDog });
-  } catch (error) {
-    return res.status(500).json({ errorMessage: error.message });
-  }
-});
+);
 
 //the following route is tested
 router.get("/", isAuthenticated, isOwner, async (req, res, next) => {
