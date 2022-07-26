@@ -42,33 +42,44 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 //the following route is tested
 router.put(
   "/",
-  fileUploader.single("imageUrl"),
+  fileUploader.single("profilePicture"),
   isAuthenticated,
   async (req, res, next) => {
     //allows user to edit own profile
     try {
       const { name, email, address } = req.body;
-      let {profilePicture} = req.body;
       if (name === "" || email === "" || address === "") {
         res.status(400).json({
           message: "Please make sure you fill all mandatory fields",
         });
       }
       if (req.file) {
-        profilePicture = req.file.path;
+        req.body.profilePicture = req.file.path;
+      } else {
+        req.body.profilePicture = req.body.profilePicture[1];
       }
+
+      delete req.body._id;
+      delete req.body.dog;
+      delete req.body.matches;
+
+      console.log("req.body", req.body);
+      console.log("req.file", req.file);
+      console.log("req.body.profilePicture", req.body.profilePicture);
+
       const updatedUser =
-        await Buyer.findByIdAndUpdate(req.payload._id, {...req.body, profilePicture}, {
+        (await Buyer.findByIdAndUpdate(req.payload._id, req.body, {
           new: true,
-        }) ||
-        await Owner.findByIdAndUpdate(req.payload._id, {...req.body, profilePicture}, {
+        })) ||
+        (await Owner.findByIdAndUpdate(req.payload._id, req.body , {
           new: true,
-        });
+        }));
       // using descriptors: if uncommenting the next line, please comment the line above
-      // const updatedUser = await MegaUser.findByIdAndUpdate(req.payload._id, req.body, { new: true });
+      // const updatedUser = await MegaUser.findByIdAndUpdate(req.payload._id, {...req.body}, { new: true });
       const user = updatedUser.toObject();
       delete user.password;
-      return res.status(200).json({ user });
+      delete user.dog
+      return res.status(200).json(user);
     } catch (error) {
       res.status(500).json({ errorMessage: error.message });
     }
