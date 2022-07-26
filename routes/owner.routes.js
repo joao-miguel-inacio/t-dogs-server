@@ -64,9 +64,10 @@ router.post(
   async (req, res, next) => {
     //creates a new dog and associates the created dog to the user that created it
     try {
-      console.log("in the server, req.body", req.body);
-      console.log("in the server, req.body.image", req.body.image);
-      const { name, breed, age, gender, size, price } = req.body;
+      console.log("in the server, req.body", req.body); //this is good
+      console.log("in the server, req.body.image", req.body.image); //this is good
+      console.log("in the server, file.path", req.file.path);
+      const { image, name, breed, age, gender, size, price } = req.body;
       if (
         image === "" ||
         name === "" ||
@@ -80,7 +81,6 @@ router.post(
           message: "Please make sure you fill all mandatory fields",
         });
       }
-      console.log(req.file.path);
       const newDog = await Dog.create({ ...req.body, image: req.file.path });
       await Dog.findByIdAndUpdate(newDog._id, {
         $addToSet: { owner: req.payload._id },
