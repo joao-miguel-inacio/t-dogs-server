@@ -58,27 +58,22 @@ router.put(
       } else {
         req.body.profilePicture = req.body.profilePicture[1];
       }
-
       delete req.body._id;
       delete req.body.dog;
       delete req.body.matches;
-
-      console.log("req.body", req.body);
-      console.log("req.file", req.file);
-      console.log("req.body.profilePicture", req.body.profilePicture);
-
       const updatedUser =
         (await Buyer.findByIdAndUpdate(req.payload._id, req.body, {
           new: true,
         })) ||
-        (await Owner.findByIdAndUpdate(req.payload._id, req.body , {
+        (await Owner.findByIdAndUpdate(req.payload._id, req.body, {
           new: true,
         }));
       // using descriptors: if uncommenting the next line, please comment the line above
       // const updatedUser = await MegaUser.findByIdAndUpdate(req.payload._id, {...req.body}, { new: true });
       const user = updatedUser.toObject();
       delete user.password;
-      delete user.dog
+      delete user.dog;
+      delete user.matches;
       return res.status(200).json(user);
     } catch (error) {
       res.status(500).json({ errorMessage: error.message });
