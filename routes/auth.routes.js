@@ -207,8 +207,6 @@ router.post("/signin", async (req, res, next) => {
 
 //the following route is tested
 router.get("/verify", isAuthenticated, (req, res, next) => {
-  //this route was created to test the middleware
-  console.log("req payload", req.payload);
   res.status(200).json(req.payload);
 });
 

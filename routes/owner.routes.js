@@ -64,9 +64,6 @@ router.post(
   async (req, res, next) => {
     //creates a new dog and associates the created dog to the user that created it
     try {
-      console.log("in the server, req.body", req.body); //this is good
-      console.log("in the server, req.body.image", req.body.image); //this is good
-      console.log("in the server, file.path", req.file.path);
       const { image, name, breed, age, gender, size, price } = req.body;
       if (
         image === "" ||
@@ -88,7 +85,6 @@ router.post(
       await Owner.findByIdAndUpdate(req.payload._id, {
         $addToSet: { dog: newDog._id },
       });
-      console.log(newDog);
       return res.status(201).json({ newDog });
     } catch (error) {
       return res.status(500).json({ errorMessage: error.message });
