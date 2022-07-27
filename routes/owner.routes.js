@@ -19,28 +19,41 @@ router.put(
   isOwner,
   async (req, res, next) => {
     //allows owner to edit OWN dog details
-    if (
-      !req.foundOwner.dog.some(
-        (element) => element._id.toString() === req.params.id
-      )
-    ) {
-      return res.status(500).json({ message: "Unauthorized access" });
-    }
-    const { image, name, breed, age, gender, size, price } = req.body;
-    if (
-      image === "" ||
-      name === "" ||
-      breed === "" ||
-      age === "" ||
-      gender === "" ||
-      size === "" ||
-      price === ""
-    ) {
-      res.status(400).json({
-        message: "Please make sure you fill all mandatory fields",
-      });
-    }
     try {
+      if (
+        !req.foundOwner.dog.some(
+          (element) => element._id.toString() === req.params.id
+        )
+      ) {
+        return res.status(500).json({ message: "Unauthorized access" });
+      }
+      const { image, name, breed, age, gender, size, price } = req.body;
+      if (
+        image === "" ||
+        name === "" ||
+        breed === "" ||
+        age === "" ||
+        gender === "" ||
+        size === "" ||
+        price === ""
+      ) {
+        res.status(400).json({
+          message: "Please make sure you fill all mandatory fields",
+        });
+      }
+
+      console.log("req.body", req.body);
+      console.log("req.file", req.file);
+
+      if (req.file) {
+        req.body.image = req.file.path;
+      } else {
+        req.body.image = req.body.image[1];
+      }
+
+      delete req.body._id;
+      delete req.body.owner;
+
       const editDog = await Dog.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
       });
