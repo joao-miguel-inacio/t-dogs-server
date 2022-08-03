@@ -15,7 +15,9 @@ const fileUploader = require("../config/cloudinary.config");
 router.get("/:id", isAuthenticated, async (req, res, next) => {
   //shows single dog details
   try {
-    const dog = await Dog.findById(req.params.id).populate("owner");
+    const foundDog = await Dog.findById(req.params.id).populate("owner");
+    const dog = foundDog.toObject();
+    delete dog.owner.password;
     return res.status(201).json({ dog });
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
