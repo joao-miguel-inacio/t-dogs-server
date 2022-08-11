@@ -42,9 +42,6 @@ router.put(
         });
       }
 
-      console.log("req.body", req.body);
-      console.log("req.file", req.file);
-
       if (req.file) {
         req.body.image = req.file.path;
       } else {

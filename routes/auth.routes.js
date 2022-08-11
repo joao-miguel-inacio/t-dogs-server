@@ -19,7 +19,7 @@ const isOwner = require ("../middleware/isOwner");
 router.post("/signup", async (req, res, next) => {
   //allows user to sign up
   const { userType } = req.body;
-  if (userType === "buyer") {
+  if (userType === "isBuyer") {
     const {
       name,
       email,
