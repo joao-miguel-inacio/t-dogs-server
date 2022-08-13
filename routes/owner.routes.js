@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const isAuthenticated = require("../middleware/isAuthenticated");
-const Owner = require("../models/Owner.model");
+const Owner = require("../models/Owner.Model");
 // using descriptors: if uncommenting the next line, please comment the 2 lines above
 // const Owner = require ("../models/MegaUser.model")
 const Dog = require("../models/Dog.model");

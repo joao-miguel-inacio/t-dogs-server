@@ -1,8 +1,8 @@
-const Owner = require("../models/Owner.model");
+const Owner = require("../models/Owner.Model");
 
 async function isOwner(req, res, next) {
   try {
-    const foundOwner = await Owner.findById(req.payload._id).populate('dog');
+    const foundOwner = await Owner.findById(req.payload._id).populate("dog");
     if (!foundOwner) {
       res.status(500).json({ message: "Unauthorized access." });
       return;
