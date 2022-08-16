@@ -1,6 +1,11 @@
 const { Schema, model } = require("mongoose");
 
 const ownerSchema = new Schema({
+  userType: {
+      type: String,
+      required: true,
+      enum: ["isOwner"],
+    },
     name: {
       type: String,
       required: true,
