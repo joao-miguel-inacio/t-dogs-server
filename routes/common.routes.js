@@ -20,7 +20,7 @@ router.get("/:id", isAuthenticated, async (req, res, next) => {
     delete dog.owner.password;
     return res.status(201).json({ dog });
   } catch (error) {
-    return res.status(500).json({ errorMessage: error.message });
+    return res.status(500).json({ message: error.message });
   }
 });
 
@@ -37,7 +37,7 @@ router.get("/", isAuthenticated, async (req, res, next) => {
     delete user.password;
     return res.status(200).json({ user });
   } catch (error) {
-    res.status(500).json({ errorMessage: error.message });
+    res.status(500).json({ message: error.message });
   }
 });
 
@@ -78,7 +78,7 @@ router.put(
       delete user.matches;
       return res.status(200).json(user);
     } catch (error) {
-      res.status(500).json({ errorMessage: error.message });
+      res.status(500).json({ message: error.message });
     }
   }
 );

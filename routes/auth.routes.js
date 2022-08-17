@@ -8,8 +8,11 @@ const Owner = require("../models/Owner.Model");
 // using descriptors: if uncommenting the next line, please comment the 2 lines above
 // const {MegaUser, Owner, Buyer} = require ("../models/MegaUser.model")
 const saltRounds = 10;
+<<<<<<< HEAD
 const isBuyer = require("../middleware/isBuyer");
 const isOwner = require("../middleware/isOwner");
+=======
+>>>>>>> c24b919ccff18b4c61eb9be2c172bcef7ea0d862
 
 /*
  * * All the routes are prefixed with `/api/auth`
@@ -18,6 +21,7 @@ const isOwner = require("../middleware/isOwner");
 //the following route is tested
 router.post("/signup", async (req, res, next) => {
   //allows user to sign up
+
   const { userType } = req.body;
   if (userType === "isBuyer") {
     const {
@@ -60,6 +64,7 @@ router.post("/signup", async (req, res, next) => {
       const hashedPass = bcrypt.hashSync(password, salt);
 
       const createdBuyer = await Buyer.create({
+        userType,
         name,
         email,
         password: hashedPass,
@@ -118,6 +123,7 @@ router.post("/signup", async (req, res, next) => {
       const hashedPass = bcrypt.hashSync(password, salt);
 
       const createdOwner = await Owner.create({
+        userType,
         name,
         email,
         password: hashedPass,
@@ -193,7 +199,12 @@ router.post("/signin", async (req, res, next) => {
         return;
       }
       const foundUser = foundOwner;
+<<<<<<< HEAD
       const authToken = comparePasswordAndCreateToken(password, foundUser);
+=======
+      const authToken = comparePasswordAndCreateToken (password, foundUser);
+      console.log(authToken);
+>>>>>>> c24b919ccff18b4c61eb9be2c172bcef7ea0d862
       if (authToken) {
         res.status(200).json({ authToken });
       } else {
