@@ -8,11 +8,9 @@ const Owner = require("../models/Owner.Model");
 // using descriptors: if uncommenting the next line, please comment the 2 lines above
 // const {MegaUser, Owner, Buyer} = require ("../models/MegaUser.model")
 const saltRounds = 10;
-<<<<<<< HEAD
+
 const isBuyer = require("../middleware/isBuyer");
 const isOwner = require("../middleware/isOwner");
-=======
->>>>>>> c24b919ccff18b4c61eb9be2c172bcef7ea0d862
 
 /*
  * * All the routes are prefixed with `/api/auth`
@@ -199,12 +197,12 @@ router.post("/signin", async (req, res, next) => {
         return;
       }
       const foundUser = foundOwner;
-<<<<<<< HEAD
+
       const authToken = comparePasswordAndCreateToken(password, foundUser);
-=======
-      const authToken = comparePasswordAndCreateToken (password, foundUser);
+
+      /*  const authToken = comparePasswordAndCreateToken (password, foundUser); */
       console.log(authToken);
->>>>>>> c24b919ccff18b4c61eb9be2c172bcef7ea0d862
+
       if (authToken) {
         res.status(200).json({ authToken });
       } else {
