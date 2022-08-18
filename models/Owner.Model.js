@@ -21,9 +21,7 @@ const ownerSchema = new Schema(
     password: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
-      minlength: 8,
     },
     profilePicture: {
       type: String,

@@ -17,10 +17,6 @@ const dogSchema = new Schema({
   age: {
     type: Number,
     required: true,
-    approximate: {
-      type: Boolean,
-      default: false,
-    },
   },
   gender: {
     type: String,

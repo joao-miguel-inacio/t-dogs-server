@@ -18,7 +18,7 @@ const megaUserSchema = new Schema(
       required: true,
       unique: true,
       trim: true,
-      minlength: 9,
+      /*    minlength: 9, */
     },
     profilePicture: {
       type: String,
@@ -66,17 +66,17 @@ const buyerSchema = new Schema({
 const Buyer = MegaUser.discriminator("Buyer", buyerSchema);
 
 const ownerSchema = new Schema({
-    phoneNumber: {
-        type: Number,
-      },
-      dog: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: "Dog",
-        },
-      ],
-  });
-  
-  const Owner = MegaUser.discriminator("Owner", ownerSchema);
+  phoneNumber: {
+    type: Number,
+  },
+  dog: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Dog",
+    },
+  ],
+});
 
-module.exports = {MegaUser, Buyer, Owner};
+const Owner = MegaUser.discriminator("Owner", ownerSchema);
+
+module.exports = { MegaUser, Buyer, Owner };

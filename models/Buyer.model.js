@@ -1,11 +1,12 @@
 const { Schema, model } = require("mongoose");
 
-const buyerSchema = new Schema({
-  userType: {
-    type: String,
-    required: true,
-    enum: ["isBuyer"],
-  },
+const buyerSchema = new Schema(
+  {
+    userType: {
+      type: String,
+      required: true,
+      enum: ["isBuyer"],
+    },
     name: {
       type: String,
       required: true,
@@ -20,9 +21,7 @@ const buyerSchema = new Schema({
     password: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
-      minlength: 9,
     },
     profilePicture: {
       type: String,
