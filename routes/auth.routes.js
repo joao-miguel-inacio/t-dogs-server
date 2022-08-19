@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const isAuthenticated = require("../middleware/isAuthenticated");
 const Buyer = require("../models/Buyer.model");
-const Owner = require("../models/Owner.Model");
+const Owner = require("../models/Owner.model");
 // using descriptors: if uncommenting the next line, please comment the 2 lines above
 // const {MegaUser, Owner, Buyer} = require ("../models/MegaUser.model")
 const saltRounds = 10;
