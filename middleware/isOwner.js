@@ -1,4 +1,4 @@
-const Owner = require("../models/Owner.Model");
+const Owner = require("../models/Owner.model");
 
 async function isOwner(req, res, next) {
   try {
