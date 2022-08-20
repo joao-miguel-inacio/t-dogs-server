@@ -1,6 +1,6 @@
 # T-DOGS
 
-IronHack Project 3 - [Find your perfect dog!](https://t-dogs.netlify.app/)
+IronHack Project 3 - [Find your perfect dog!](https://t-dogs.netlify.app/) [![Netlify Status](https://api.netlify.com/api/v1/badges/b40eca19-052e-42f1-af47-4ee9b9e3ab59/deploy-status)](https://app.netlify.com/sites/t-dogs/deploys)
 
 <img src="https://res.cloudinary.com/dvru7nv6q/image/upload/v1660846590/T-Dogs/homepage_slezt4.png" alt="homepage" width="100%"/>
 
